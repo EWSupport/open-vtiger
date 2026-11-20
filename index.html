@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Send no Referer, so Vtiger's cross-site check accepts the request
+     (vtiger-gmail-integration D-024). -->
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex, nofollow">
+<title>Opening Vtiger</title>
+<style>
+  body { font: 15px/1.5 system-ui, sans-serif; margin: 40px 16px; color: #222; background: #fff; }
+  @media (prefers-color-scheme: dark) { body { color: #ddd; background: #1e1e1e; } a { color: #8ab4f8; } }
+</style>
+</head>
+<body>
+<p id="msg">Opening Vtiger…</p>
+<script>
+  // Forwards only to Everwell's Vtiger. The fragment (#Module/123) never
+  // leaves the browser, so GitHub never sees which record was opened.
+  (function () {
+    var VTIGER = 'https://everwell.borugroup.com';
+    var m = /^#([A-Za-z]{1,40})\/(\d{1,12})$/.exec(location.hash);
+    var msg = document.getElementById('msg');
+    if (!m) { msg.textContent = 'This link is incomplete. Open the record from Vtiger instead.'; return; }
+    var url = VTIGER + '/index.php?module=' + m[1] + '&view=Detail&record=' + m[2];
+    msg.innerHTML = 'Opening Vtiger… If nothing happens, <a rel="noreferrer" href="' + url + '">click here</a>.';
+    location.replace(url);
+  })();
+</script>
+</body>
+</html>
